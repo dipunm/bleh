@@ -85,6 +85,10 @@ You are allowed to ask for 0 or more parameters. The code calling your method mu
 ##### `{ ... }`
 The curly brackets signify a **"block"**. A block is a multiline section of a file that contains lines of executable code. This is where you write your actual code. Keep in mind that every `{` must be accompanied by a `}` to end the block.
 
+#### `public static void main(String args[])`
+A **"method signature"** is the line above the code block. The access modifier, static keyword, return type, method name and the parameters all make up the method signature. It is common practice to strive for making methods easy to predict via its signature.
+Mainly by reading just the return type, method name and parameters, you can figure out what a method is going to do for you and you can guess if that method is the one you need. This becomes more and more important as your software grows with more and more methods.
+
 ## Here is a variable declaration:
 ```java
 String myVariable;
@@ -140,8 +144,41 @@ Had we written a more complex piece of logic, the errors and problems that we ar
 
 In our case, we can take this application and attempt to run it. If we mispelled a word like `public` or if our java runtime was attempting to call a method named `execute` due to some sort of misconfiguration somewhere else, we would safely know the application was not working because we would not be able to see our **"Hello world"** message.
 
-## Methods being called by methods:
-TODO...
+## Here's a method being called by another method:
+```java
+public class Program 
+{
+    public static void main(String args[]) 
+    {
+        String message = generateGreeting("world");
+        System.out.println(message);
+    } 
+    
+    public static String generateGreeting(String recipient)
+    {
+        return "Hello " + recipient + "!";
+    }
+}
+```
+In this example, we are calling a method called `generateGreeting` from the method `main`. The method `generateGreeting` requires one parameter, and that parameter must be a string. 
+We specify what we want by choosing an appropriate type (in this case `String`) and an appropriate parameter name `recipient`. Reading the method signature, we can tell that this is a method that
+takes the name of a recipient and returns a string which represents a greeting that has been generated in some way, most likely using the recipient name provided.
+
+In the first line of the main method, there are actually multiple things happenning:
+
+- Firstly, a variable `message` is declared.
+- Then a string `"world"` is created in memory.
+- The method `generateGreeting` is called with `"world"` being sent as the parameter named `recipient`.
+- After the method has been executed, the return value is assigned to the variable `message`.
+
+When the `generateGreeting` method is called, any previous variables that had been declared in `main` will be put aside, and will not be accessible by the new method. 
+Any variables or values given to the new method as a parameter will be copied and assigned to a new variable (in this case with the name `recipient`) and will be accessible to the method as if it were declared and set as the first line of the method.
+
+Likewise, after the `generateGreeting` method has completed, if it returns a value, that return value is copied to a place where `main` can access it and anything else is pushed 
+aside. The difference here is that the things pushed aside are then deleted from memory. The variables in `main` needed to remain in memory so that it could be restored when 
+`generateGreeting` had completed. When `main` completes, all of its variables will be cleaned up from memory also.
+
+>The last two paragraphs may be a little confusing at first, continue reading and after reading about **scopes**, revisit this section.
 
 ## This is an if statement:
 ```java
